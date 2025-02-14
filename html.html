@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title class="MarinGO">MarinGO</title>
+  <title>Lær om marine dyr</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-blue-50 flex flex-col items-center p-8 space-y-6">
+
+  <!-- Logo -->
+  <div class="logo">
+    <img src="bilder/logo.png" alt="Logo" class="w-full h-full object-cover transition-transform duration-500 ease-in-out hover:scale-110">
+  </div>
+
+  <!-- Tekst under logoen med Bubblegum font -->
+  <div class="text-center mt-4">
+    <h1 class="text-4xl font-bold text-blue-700" style="font-family: 'Bubblegum Sans', sans-serif;">MarinGO</h1>
+  </div>
+
+  <!-- Lær om dyr Button -->
+  <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out" onclick="startQuiz()">
+    Lær om marine dyr
+  </button>
+
+  <!-- Quiz - Interaktiv læring -->
+  <div id="quizCard" class="w-full max-w-md rounded-lg shadow-xl bg-white hidden">
+    <div class="p-6 flex flex-col items-center space-y-4">
+      <div class="w-16 h-16 text-blue-500 bg-blue-200 p-2 rounded-full shadow-md">
+        <img src="bilder/marine-dyr-icon.png" alt="Marine Dyr Icon" class="w-full h-full object-cover">
+      </div>
+      <p class="text-lg font-semibold text-blue-700">Lær om marine dyr!</p>
+
+      <div id="questionContainer">
+        <p id="questionText" class="text-md font-semibold text-blue-600"></p>
+        <div id="optionsContainer" class="flex flex-col items-center space-y-2"></div>
+      </div>
+
+      <div id="quizEnd" class="mt-4 text-blue-700 hidden">
+        <p>Quiz avsluttet! Du fikk <span id="score"></span> av 3 riktige!</p>
+        <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out" onclick="restartQuiz()">
+          Start på nytt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live-feed -->
+  <div class="w-full max-w-md rounded-lg shadow-xl bg-white">
+    <div class="p-6 flex flex-col items-center space-y-4">
+      <div class="w-16 h-16 bg-blue-200 p-2 rounded-full shadow-md">
+        <img src="bilder/live.png" alt="Live Sel" class="w-full h-full object-cover">
+      </div>
+      <p class="text-lg font-semibold text-blue-700">Live av seler</p>
+      <button id="liveFeedButton" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out" onclick="toggleLiveFeed()">
+        Se nå
+      </button>
+      <div id="liveFeedContainer" class="mt-4 w-full max-w-xs hidden">
+        <!-- Embed YouTube Live Stream -->
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/aXAsMcmtJTc?autoplay=1&mute=0&controls=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fakta og info -->
+  <div class="w-full max-w-md rounded-lg shadow-xl bg-white">
+    <div class="p-6 flex flex-col items-center space-y-4">
+      <div class="w-16 h-16 bg-blue-200 p-2 rounded-full shadow-md">
+        <img src="bilder/fleip.png" alt="Fakta Icon" class="w-full h-full object-cover">
+      </div>
+      <p class="text-lg font-semibold text-blue-700">Lær om marine dyr</p>
+      <button id="factButton" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out" onclick="toggleFact()">
+        Vis fakta
+      </button>
+      <div id="factContainer" class="mt-4 text-blue-700 hidden">
+        <p class="mb-3">Selene i Oslofjorden er en viktig del av økosystemet.</p>
+        <p class="mb-3">De hviler og jakter i fjorden, og kan tilbringe flere dager på land.</p>
+        <p class="mb-3">Selene er utmerkede svømmere og kan dykke til store dybder.</p>
+        <p class="mb-3">Oslofjorden har et variert marint liv, med mange fiskearter.</p>
+        <button id="addFactButton" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ease-in-out mt-4" onclick="addMoreFacts()">
+          Mer?
+        </button>
+        <button id="closeFactButton" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-200 ease-in-out mt-2" onclick="closeFact()">
+          Lukk
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Om Oss Seksjon -->
+  <div class="w-full max-w-md rounded-lg shadow-xl bg-white mt-8">
+    <div class="p-6 flex flex-col items-center space-y-4">
+      <h2 class="text-2xl font-semibold text-blue-700">Om Oss</h2>
+      <p class="text-md text-blue-600 text-center">
+        MarinGO er et prosjekt som har som mål å øke bevisstheten om marine dyr og deres viktige rolle i økosystemet.
+        Vi ønsker å dele kunnskap om livet i havet på en morsom og interaktiv måte, slik at flere kan forstå
+        betydningen av å bevare vårt marine miljø. Utforsk forskjellige dyrearter, lær om deres livsstil og få innsikt i
+        hvorfor havet er så viktig for planetens helse.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function toggleFact() {
+      const factContainer = document.getElementById("factContainer");
+      if (factContainer.classList.contains("hidden")) {
+        factContainer.classList.remove("hidden");
+      } else {
+        factContainer.classList.add("hidden");
+      }
+    }
+
+    function addMoreFacts() {
+      const factContainer = document.getElementById("factContainer");
+      const newFact = document.createElement("p");
+      newFact.textContent = "Oslofjorden har over 150 forskjellige fiskearter.";
+      newFact.classList.add("mb-3"); // Legger til margin for konsistens
+      factContainer.appendChild(newFact);
+    }
+
+    function closeFact() {
+      const factContainer = document.getElementById("factContainer");
+      factContainer.classList.add("hidden");
+    }
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
